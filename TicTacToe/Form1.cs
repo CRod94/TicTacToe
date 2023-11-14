@@ -67,8 +67,8 @@ namespace TicTacToe
             RestartGame(); //Runs the restart method - source: eigener code
         }
 
-        private void CheckGame()                          //checks if theres 3 in a row, gives the winner credits and disables all buttons
-        {                                                 //source: eigener code
+        private void CheckGame()                          //checks if theres 3 in a row, gives the winner credits
+        {                                                 //source: eigener Code
             if (button1.Text == "X" && button2.Text == "X" && button3.Text == "X"
                 || button4.Text == "X" && button5.Text == "X" && button6.Text == "X"
                 || button7.Text == "X" && button8.Text == "X" && button9.Text == "X"
@@ -78,14 +78,14 @@ namespace TicTacToe
                 || button1.Text == "X" && button5.Text == "X" && button9.Text == "X"
                 || button3.Text == "X" && button5.Text == "X" && button7.Text == "X")
             {
-                CPUTimer.Stop();
-                MessageBox.Show("The Human wins against the AI!");
+                CPUTimer.Stop();                                      //stops the timer, shows a message, changes the labeltext and restarts the game
+                MessageBox.Show("The Human wins against the AI!");    //source: eigener Code
                 playerWinCount += 1;
                 label1.Text = "Player Wins: " + playerWinCount;
                 RestartGame();
             }
-            else if (button1.Text == "O" && button2.Text == "O" && button3.Text == "O"
-                || button4.Text == "O" && button5.Text == "O" && button6.Text == "O"
+            else if (button1.Text == "O" && button2.Text == "O" && button3.Text == "O" //checks if theres 3 Os in a row, gives the winner credits 
+                || button4.Text == "O" && button5.Text == "O" && button6.Text == "O"   //source: eigener Code
                 || button7.Text == "O" && button8.Text == "O" && button9.Text == "O"
                 || button1.Text == "O" && button4.Text == "O" && button7.Text == "O"
                 || button2.Text == "O" && button5.Text == "O" && button8.Text == "O"
@@ -94,8 +94,8 @@ namespace TicTacToe
                 || button3.Text == "O" && button5.Text == "O" && button7.Text == "O")
             {
                 CPUTimer.Stop();
-                MessageBox.Show("The AI wins against the Human!");
-                CPUWinCount += 1;
+                MessageBox.Show("The AI wins against the Human!");  //stops the timer, shows a message, changes the labeltext and restarts the game
+                CPUWinCount += 1;                                   //source: eigener Code
                 label2.Text = "CPU Wins: " + playerWinCount;
                 RestartGame();
             }
@@ -103,7 +103,7 @@ namespace TicTacToe
 
         private void RestartGame()
         {
-            buttons = new List<Button> { button1, button2, button3, button4, button5, button6, button7, button8, button9 }; //liste für alle buttons -Source: eigener code
+            buttons = new List<Button> { button1, button2, button3, button4, button5, button6, button7, button8, button9 }; //liste für alle buttons -Source: google
 
             foreach (Button x in buttons)
             {

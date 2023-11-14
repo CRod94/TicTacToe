@@ -12,17 +12,22 @@ namespace TicTacToe
 {
     public partial class Form1 : Form
     {
-        public enum Player         //source: eigener code
-        {
-            X, O
-        }
-
-        Player currentPlayer;
-        Random random = new Random();
+        bool ownPlayer;
         int playerWinCount = 0;
         int CPUWinCount = 0;
-        List<Button> buttons;
-        private bool CPUMoves = false;  //prevents multiple inputs from the user while the cpu moves - Source: eigener Code
+        private MainGame _currentGame;
+
+        private MainGame CurrentGame
+        {
+            get => _currentGame; set
+            {
+                if (_currentGame != null) _currentGame.PropertyChanged -= CurrentGame_PropertyChanged;
+                _currentGame = value;
+                _currentGame.PropertyChanged -= CurrentGame_PropertyChanged;
+                _currentGame.PropertyChanged += CurrentGame_PropertyChanged;
+                DisplayGame(_currentGame);
+            }
+        }
 
         public Form1()
         {
@@ -30,36 +35,24 @@ namespace TicTacToe
             RestartGame();
         }
 
-        private void CPUmove(object sender, EventArgs e)
+        private void DisplayGame(MainGame game)
         {
-            if (buttons.Count > 0 && CPUMoves)
+            var field = game.GetField();
+            foreach (var btn in Controls.OfType<Button>().Where(a => !String.IsNullOrWhiteSpace(a.Tag?.ToString())))
             {
-                int index = random.Next(buttons.Count);     //sets a random enemy field, marks it, disables the button, switches the button color and removes the button from the list
-                buttons[index].Enabled = false;             //source: youtube tutorial & eigener code
-                currentPlayer = Player.O;
-                buttons[index].Text = currentPlayer.ToString();
-                buttons[index].BackColor = Color.OrangeRed;
-                buttons.RemoveAt(index);
-                CheckGame();
-                CPUMoves = false;
-                CPUTimer.Stop();
+                SetButton(btn, field[Convert.ToInt32(btn.Tag)]);
             }
+            //TODO: Zeige Current Player
         }
-
+        private void SetButton(Button btn, bool? val)
+        {
+            btn.Enabled = (val == null);
+            btn.Text = val.HasValue ? (val.Value ? "X" : "O") : "";
+        }
         private void PlayerClickButton(object sender, EventArgs e)
         {
-            if (!CPUMoves)
-            {
-                var button = (Button)sender;        //sets a random enemy field, marks it, disables the button, switches the button color and removes the button from the list 
-                currentPlayer = Player.X;
-                button.Text = currentPlayer.ToString(); //source: youtube tutorial & eigener code
-                button.Enabled = false;
-                button.BackColor = Color.GreenYellow;
-                buttons.Remove(button);
-                CheckGame();
-                CPUMoves = true;
-                CPUTimer.Start();
-            }
+            //if (currentGame.CurrentPlayer != ownPlayer) return;
+            if (sender is Button btn) CurrentGame.PlayerTurn(Convert.ToInt32(btn.Tag));
         }
 
         private void RestartGameClick(object sender, EventArgs e)
@@ -67,52 +60,14 @@ namespace TicTacToe
             RestartGame(); //Runs the restart method - source: eigener code
         }
 
-        private void CheckGame()                          //checks if theres 3 in a row, gives the winner credits
-        {                                                 //source: eigener Code
-            if (button1.Text == "X" && button2.Text == "X" && button3.Text == "X"
-                || button4.Text == "X" && button5.Text == "X" && button6.Text == "X"
-                || button7.Text == "X" && button8.Text == "X" && button9.Text == "X"
-                || button1.Text == "X" && button4.Text == "X" && button7.Text == "X"
-                || button2.Text == "X" && button5.Text == "X" && button8.Text == "X"
-                || button3.Text == "X" && button6.Text == "X" && button9.Text == "X"
-                || button1.Text == "X" && button5.Text == "X" && button9.Text == "X"
-                || button3.Text == "X" && button5.Text == "X" && button7.Text == "X")
-            {
-                CPUTimer.Stop();                                      //stops the timer, shows a message, changes the labeltext and restarts the game
-                MessageBox.Show("The Human wins against the AI!");    //source: eigener Code
-                playerWinCount += 1;
-                label1.Text = "Player Wins: " + playerWinCount;
-                RestartGame();
-            }
-            else if (button1.Text == "O" && button2.Text == "O" && button3.Text == "O" //checks if theres 3 Os in a row, gives the winner credits 
-                || button4.Text == "O" && button5.Text == "O" && button6.Text == "O"   //source: eigener Code
-                || button7.Text == "O" && button8.Text == "O" && button9.Text == "O"
-                || button1.Text == "O" && button4.Text == "O" && button7.Text == "O"
-                || button2.Text == "O" && button5.Text == "O" && button8.Text == "O"
-                || button3.Text == "O" && button6.Text == "O" && button9.Text == "O"
-                || button1.Text == "O" && button5.Text == "O" && button9.Text == "O"
-                || button3.Text == "O" && button5.Text == "O" && button7.Text == "O")
-            {
-                CPUTimer.Stop();
-                MessageBox.Show("The AI wins against the Human!");  //stops the timer, shows a message, changes the labeltext and restarts the game
-                CPUWinCount += 1;                                   //source: eigener Code
-                label2.Text = "CPU Wins: " + playerWinCount;
-                RestartGame();
-            }
-        }
-
         private void RestartGame()
         {
-            buttons = new List<Button> { button1, button2, button3, button4, button5, button6, button7, button8, button9 }; //liste für alle buttons -Source: google
+            CurrentGame = new MainGame();
+        }
 
-            foreach (Button x in buttons)
-            {
-                x.Enabled = true;                     //resets all buttons to their default color and stage - Source: eigener Code
-                x.Text = "?";
-                x.BackColor = DefaultBackColor;
-
-
-            }
+        private void CurrentGame_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender is MainGame game) DisplayGame(game);
         }
 
         private void InGameExitClick(object sender, EventArgs e) //buttonclick event for hiding the game and switching to the menu - Source: eigener Code
@@ -120,6 +75,7 @@ namespace TicTacToe
             MenuScreen menu = new MenuScreen();
             menu.Show();
             this.Hide();
+            
         }
     }
 }

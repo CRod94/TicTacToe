@@ -99,7 +99,6 @@ namespace TicTacToe
                 label2.Text = "CPU Wins: " + playerWinCount;
                 RestartGame();
             }
-
         }
 
         private void RestartGame()

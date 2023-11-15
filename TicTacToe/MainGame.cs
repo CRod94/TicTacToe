@@ -31,9 +31,14 @@ namespace TicTacToe
             CurrentPlayer = !CurrentPlayer; //Wechselt die spieler indem das bool druch den operator "!" auf falsch bzw true gesetzt wird (umgedreht)
             State = CheckGame(); //initiiert die nächste "Phase" des spiels in der der spielstand überprüft wird
             if (State != GameState.WaitPlayer1 && State != GameState.WaitPlayer2) CurrentPlayer = null; //überprüft ob nach CheckGame wieder ein spieler am zug ist bzw ob ein aktueller "Waitplayer" status aktiv ist
+
+            if (State == GameState.WaitPlayer2)
+            {
+                Task.Delay(1000).ContinueWith(_ => PerformComputerMove());
+            }
         }
 
-        private GameState CheckGame() //funktion names "CheckGame" die einen "GameState" zurück gibt 
+        public GameState CheckGame() //funktion names "CheckGame" die einen "GameState" zurück gibt 
         {
             if ((Field[0] != null || Field[4] != null || Field[8] != null) && Field.Count(a => a != null) >= 5) // Prüfent ob überhaupt ein Gewinner möglich ist, diese Felder müssen belegt sein damit überhaupt jemand gewinnen kann
             {
@@ -75,5 +80,19 @@ namespace TicTacToe
             WinPlayer2,
             Tie
         }
+        public void PerformComputerMove()
+        {
+            int[] bestMove = KIPlayer.FindBestMove(this);
+            int fieldIndex = bestMove[0] * 3 + bestMove[1];
+
+            while (Field[fieldIndex] != null)
+            {
+                bestMove = KIPlayer.FindBestMove(this);
+                fieldIndex = bestMove[0] * 3 + bestMove[1];
+            }
+
+            PlayerTurn(fieldIndex);
+        }
+
     }
 }

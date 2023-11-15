@@ -41,6 +41,8 @@
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
+            this.lblPlayerTurn = new System.Windows.Forms.Label();
+            this.lblCPUTurn = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblPlayerWins
@@ -212,12 +214,34 @@
             this.button11.UseVisualStyleBackColor = false;
             this.button11.Click += new System.EventHandler(this.InGameExitClick);
             // 
+            // lblPlayerTurn
+            // 
+            this.lblPlayerTurn.AutoSize = true;
+            this.lblPlayerTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPlayerTurn.ForeColor = System.Drawing.Color.GreenYellow;
+            this.lblPlayerTurn.Location = new System.Drawing.Point(13, 30);
+            this.lblPlayerTurn.Name = "lblPlayerTurn";
+            this.lblPlayerTurn.Size = new System.Drawing.Size(0, 16);
+            this.lblPlayerTurn.TabIndex = 13;
+            // 
+            // lblCPUTurn
+            // 
+            this.lblCPUTurn.AutoSize = true;
+            this.lblCPUTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCPUTurn.ForeColor = System.Drawing.Color.OrangeRed;
+            this.lblCPUTurn.Location = new System.Drawing.Point(375, 31);
+            this.lblCPUTurn.Name = "lblCPUTurn";
+            this.lblCPUTurn.Size = new System.Drawing.Size(0, 16);
+            this.lblCPUTurn.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(34)))), ((int)(((byte)(117)))));
             this.ClientSize = new System.Drawing.Size(484, 461);
+            this.Controls.Add(this.lblCPUTurn);
+            this.Controls.Add(this.lblPlayerTurn);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
@@ -254,6 +278,8 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Label lblPlayerTurn;
+        private System.Windows.Forms.Label lblCPUTurn;
     }
 }
 

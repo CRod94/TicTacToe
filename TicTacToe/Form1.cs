@@ -51,9 +51,13 @@ namespace TicTacToe
         }
         private void PlayerClickButton(object sender, EventArgs e) //methode zum entgegennehmen des spielerinputs eines clicks auf einen button
         {
-            //if (currentGame.CurrentPlayer != ownPlayer) return;
-            if (sender is Button btn) CurrentGame.PlayerTurn(Convert.ToInt32(btn.Tag)); //prüft ob der sender ein button ist und ruft die methode PlayerTurn auf und übergibt ihr den tag des buttons
+            if (CurrentGame.State == MainGame.GameState.WaitPlayer1)
+            {
+                if (sender is Button btn) CurrentGame.PlayerTurn(Convert.ToInt32(btn.Tag)); //prüft ob der sender ein button ist und ruft die methode PlayerTurn auf und übergibt ihr den tag des buttons
+                
+            }
         }
+
 
         private void RestartGameClick(object sender, EventArgs e) //methode für Userinput des clicks auf den RestartButton
         {
@@ -71,6 +75,16 @@ namespace TicTacToe
             {
                 DisplayGame(game); //ruft die methode DisplayGame auf -> Aktualisiert die anzeige des Spiels basierend auf dem aktuellen Zustand
 
+                if (game.State == MainGame.GameState.WaitPlayer1) //prüft ob Spieler 1 an der Reihe ist
+                {
+                    lblCPUTurn.Text = ""; //Entfernt den Text aus dem label "lvlCPUTurn"
+                    lblPlayerTurn.Text = "-----------------------"; //ändert den Text in dem label "lblPlayerTurn"
+                }
+                if (game.State == MainGame.GameState.WaitPlayer2) //prüft ob Spieler 2 an der Reihe ist
+                {
+                    lblCPUTurn.Text = "--------------------"; //ändert den Text in dem lavel "lvlPlayerTurn"
+                    lblPlayerTurn.Text = ""; //entfernt den text vom label "lblPlayerturn"
+                }
                 if (game.State == MainGame.GameState.WinPlayer1) //prüft ob spieler 1 gewonnen hat
                 {
                     playerWinCount++; //erhöht die Variable playerwincount um 1 -> sie stellt die anzahl der gewonnen Spiele da
@@ -93,7 +107,6 @@ namespace TicTacToe
                 }
             }
         }
-
         private void InGameExitClick(object sender, EventArgs e) //buttonclick event for hiding the game and switching to the menu - Source: eigener Code
         {
             MenuScreen menu = new MenuScreen();   //deklarierung eines neuen Menuscreen objects

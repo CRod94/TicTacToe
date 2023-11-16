@@ -15,7 +15,7 @@ namespace TicTacToe
         private int playerWinCount = 0; //integer zur darstellung der Wins des Spielers
         private int CPUWinCount = 0; //integer zur darstellung der Wins der CPU
         private MainGame _currentGame; //dekleration einer Instanz names _currentGame von MainGame (dem eigentlichen Spiel)
-
+        private KIPlayer _currentKIPlayer;
         private MainGame CurrentGame //
         {
             get => _currentGame; set //gibt den Wert von _currentgame zurück und weißt _currentgame einen wert zu der im if statement bestimmt wird
@@ -44,11 +44,19 @@ namespace TicTacToe
             }                                                    //[Convert.ToInt32(btn.Tag)] == tag des buttons zu int convertiert um aufs entsprechende feld zugreifen zu können, speichert dann für jeden button der nicht null ist den jeweiligen wert zu, true oder false
 
         }
-        private void SetButton(Button btn, bool? val) //methode zum aktuallisieren einer Schaltfläche (button), basierend auf den übergebenen Werten
+        private void SetButton(Button btn, bool? val)
         {
-            btn.Enabled = (val == null); //Enabled den betroffenen Button wenn val gleich null ist -> wenn das feld also leer ist wird der button enabled ansonsten disabled
-            btn.Text = val.HasValue ? (val.Value ? "X" : "O") : ""; //prüft ob Val einen wert besitzt. Falls val.value true ist X falls es false ist 0 und wenn es keinen wert hat nichts
+            if (btn.InvokeRequired)
+            {
+                btn.Invoke(new Action(() => SetButton(btn, val)));
+            }
+            else
+            {
+                btn.Enabled = (val == null);
+                btn.Text = val.HasValue ? (val.Value ? "X" : "O") : "";
+            }
         }
+
         private void PlayerClickButton(object sender, EventArgs e) //methode zum entgegennehmen des spielerinputs eines clicks auf einen button
         {
             if (CurrentGame.State == MainGame.GameState.WaitPlayer1)
@@ -67,10 +75,16 @@ namespace TicTacToe
         private void RestartGame() //methode zum restart des games
         {
             CurrentGame = new MainGame(); //setzt das aktuelle spiel auf den zustand eines neuen spiels -> neues game
+            _currentKIPlayer = new KIPlayer(CurrentGame, true);
         }
 
         private void CurrentGame_PropertyChanged(object sender, PropertyChangedEventArgs e) //Event-Handler für PropertyChanged der MainGame klasse. Wird aufgerufen wenn sich ein Eigenschaftswert in MainGame ändert
         {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => CurrentGame_PropertyChanged(sender, e)));
+                return;
+            }
             if (sender is MainGame game) //prüft ob der sender das MainGame formular ist und gibt ihm die Veriable game
             {
                 DisplayGame(game); //ruft die methode DisplayGame auf -> Aktualisiert die anzeige des Spiels basierend auf dem aktuellen Zustand
@@ -90,7 +104,8 @@ namespace TicTacToe
                     playerWinCount++; //erhöht die Variable playerwincount um 1 -> sie stellt die anzahl der gewonnen Spiele da
                     lblPlayerWins.Text = $"Player Wins: {playerWinCount}"; //editiert den text auf dem Label welches die anzahl der gewonnen spiele für spieler 1 darstellen soll, nutzt die variable playerwincount
 
-                    MessageBox.Show("Player 1 Wins!"); //gbit eine Messagebox aus falls Spieler 1 gewonnen hat und Text der in der MessageBox ausgegeben wird
+                    Invoke(new Action(() => MessageBox.Show("Player 1 Wins!")));
+                    //gbit eine Messagebox aus falls Spieler 1 gewonnen hat und Text der in der MessageBox ausgegeben wird
 
                     RestartGame(); //ruft die restartGame funktion auf -> startet das spiel neu
                 }
@@ -103,7 +118,11 @@ namespace TicTacToe
                     MessageBox.Show("Player 2 Wins!"); //gbit eine Messagebox aus falls Spieler 1 gewonnen hat und Text der in der MessageBox ausgegeben wird
 
                     RestartGame(); //ruft die restartGame funktion auf -> startet das spiel neu
-
+                }
+                else if (game.State != MainGame.GameState.WaitPlayer1 && game.State != MainGame.GameState.WaitPlayer2 && game.State != MainGame.GameState.WinPlayer1 && game.State != MainGame.GameState.WaitPlayer2)
+                {
+                    MessageBox.Show("It's a Tie!");
+                    RestartGame();
                 }
             }
         }

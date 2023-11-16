@@ -20,6 +20,7 @@ namespace TicTacToe
         public bool GameRunning => state == GameState.WaitPlayer1 || state == GameState.WaitPlayer2;
         public bool?[] GetField() => Field.ToList().ToArray();  //gibt array von nullable bools zurück source: daniel
 
+        public IEnumerable<int> FreeFields => Enumerable.Range(0, 9).Where(O => Field[0] == null); 
         public GameState State { get => state; private set { state = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(State))); } }
         //name of gibt exakten namen zurück. Frägt und aktuallisiert den status des spiels jedes mal wenn PropertyChanged ausgelöst oder der status verändert wurde.
         public void PlayerTurn(int fieldNr) //öffentliche methode um zu bestimmen welcher spieler an der reihe ist - öffentlich damit man von Form1 aus drauf zugreifen kann

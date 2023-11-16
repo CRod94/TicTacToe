@@ -52,8 +52,25 @@ namespace TicTacToe
 
             int[] bestMove = { -1, -1 };
             int bestValue = int.MinValue;
-
             var field = game.GetField();
+
+
+            foreach (var sp in new bool[] { ownPlayer, !ownPlayer })
+            {
+                if (field[4] == null && ((field[0] == sp || field[2] == sp || field[6] == sp || field[8] == sp))) return 4;
+
+
+                if (field[2] == null && ((field[0] == sp && field[0] == field[1]) || (field[5] == sp && field[5] == field[8]) || (field[4] == sp && field[4] == field[6]))) return 2;
+                if (field[1] == null && ((field[0] == sp && field[0] == field[2]) || (field[4] == sp && field[4] == field[7]))) return 1;
+                if (field[0] == null && ((field[1] == sp && field[1] == field[2]) || (field[3] == sp && field[3] == field[6]) || (field[4] == sp && field[4] == field[8]))) return 0;
+                if (field[3] == null && ((field[4] == sp && field[4] == field[5]) || (field[0] == sp && field[0] == field[6]))) return 3;
+                if (field[4] == null && ((field[3] == sp && field[3] == field[5]) || (field[1] == sp && field[1] == field[7]) || (field[2] == sp && field[2] == field[6]) || (field[0] == sp && field[0] == field[8]))) return 4;
+                if (field[5] == null && ((field[3] == sp && field[3] == field[4]) || (field[2] == sp && field[2] == field[8]))) return 5;
+                if (field[6] == null && ((field[0] == sp && field[0] == field[3]) || (field[7] == sp && field[7] == field[8]) || (field[4] == sp && field[4] == field[2]))) return 6;
+                if (field[7] == null && ((field[6] == sp && field[6] == field[8]) || (field[4] == sp && field[4] == field[1]))) return 7;
+                if (field[8] == null && ((field[5] == sp && field[5] == field[2]) || (field[7] == sp && field[7] == field[6]) || (field[4] == sp && field[4] == field[0]))) return 8;
+            }
+/*
             var zuege = new List<int>();
             for (int i = 0; i < 9; i++)
             {
@@ -74,21 +91,19 @@ namespace TicTacToe
 
                     if (gameCopy.State == PlayerWaitState) zuege.Add(i);
 
-
-
-
                     if (!gameCopy.GameRunning) continue;
                 }
             }
-
-            int[] centerAndCorners = {0, 2, 4, 6, 8};
+            
+            int[] centerAndCorners = { 0, 2, 4, 6, 8 };
             var availableCenterAndCorners = centerAndCorners.Where(pos => field[pos] == null).ToList();
 
-            if (availableCenterAndCorners.Any() )
+            if (availableCenterAndCorners.Any())
             {
                 return availableCenterAndCorners[rnd.Next(availableCenterAndCorners.Count)];
-            }
-            if (zuege.Any()) return zuege[rnd.Next(zuege.Count)];
+            }*/
+            //if (zuege.Any()) return zuege[rnd.Next(zuege.Count)];
+
             return rnd.Next(9);
         }
 

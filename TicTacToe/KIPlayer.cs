@@ -10,26 +10,26 @@ namespace TicTacToe
 {
     internal class KIPlayer
     {
-        private readonly MainGame game;
-        private readonly bool ownPlayer;
-        private readonly MainGame.GameState PlayerWaitState;
-        public KiMode Mode { get; set; }
+        private readonly MainGame game; //speicher instanz des Maingames, repräsentiert das aktuelle spiel
+        private readonly bool ownPlayer; // speichert den aktuellen spieler, bool gibt an welcher Spieler an der reihe ist
+        private readonly MainGame.GameState PlayerWaitState; //Speichert zustand GameState ab, welcher ausdrückt wann die KI ziehen muss
+        public KiMode Mode { get; set; } //speichert und ruft den schwierigkeitsgrad des Spiels ab
 
-        public MainGame.GameState PlayerWinState { get; }
+        public MainGame.GameState PlayerWinState { get; } //speichert den zustand ab in dem die KI gewinnt
 
-        private readonly System.Threading.Timer timer;
+        private readonly System.Threading.Timer timer; //initalisierung des Timers, wird benötigt für ereignis timer_tick
 
-        public KIPlayer(MainGame game, bool ownPlayer, KiMode mode)
+        public KIPlayer(MainGame game, bool ownPlayer, KiMode mode) //konstruktor der KIPlayer klasse, übernimmt eine instanz des spiels, eine angabe welcher spieler am zug ist und eine angabe welcher Schwiergkeitsgrad aktulle ausgewählt wurde
         {
-            this.game = game;
-            this.ownPlayer = ownPlayer;
-            this.Mode = mode;
-            PlayerWaitState = ownPlayer ? MainGame.GameState.WaitPlayer2 : MainGame.GameState.WaitPlayer1;
-            PlayerWinState = ownPlayer ? MainGame.GameState.WinPlayer2 : MainGame.GameState.WinPlayer1;
-            timer = new System.Threading.Timer(Timer_Tick, null, 1000, 1000);
+            this.game = game; //speicher den übergebenen zustand in die instanzveriable
+            this.ownPlayer = ownPlayer; //weißt der instanzveriable ownplayer den übergebenen wert zu
+            this.Mode = mode; //weißt mode die übergebene eigenschaft zu
+            PlayerWaitState = ownPlayer ? MainGame.GameState.WaitPlayer2 : MainGame.GameState.WaitPlayer1; //weißt der instanzvariable den zustand zu indem die KI auf den zug des spielers waret
+            PlayerWinState = ownPlayer ? MainGame.GameState.WinPlayer2 : MainGame.GameState.WinPlayer1; //weißt der instanzveriable den zustand zu indem der spieler auf den zug der KI wareten
+            timer = new System.Threading.Timer(Timer_Tick, null, 1000, 1000); //erstellt eine neues instanz des Timers, mit der methode Timer_Tick und einem intervall von 1000ms
         }
 
-        bool lockTick = false;
+        bool lockTick = false; //sicherheitsmechanismus um zu verhindern dass mehrere threads auf einmal aufgerufen werden ---> verhindert den loop
         private void Timer_Tick(object state)
         {
             if (lockTick) return;

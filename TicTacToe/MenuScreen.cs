@@ -22,7 +22,7 @@ namespace TicTacToe
         }
         public MenuScreen()
         {
-            InitializeComponent();
+            InitializeComponent(); //initiiert und erstellt die vorgegebenen Controls (Buttons, Textboxen, Pictureedits etc.)
         }
         private void ExitButtonClick(object sender, EventArgs e) //Buttonclickevent for closing the Application - source: eigener code
         {

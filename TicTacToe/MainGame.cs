@@ -10,7 +10,7 @@ using static TicTacToe.Form1;
 namespace TicTacToe
 {
 
-    internal class MainGame : INotifyPropertyChanged  //refreshed aktuells game sobald event ausgelöst wird
+    internal class MainGame : INotifyPropertyChanged, ICloneable  //refreshed aktuells game sobald event ausgelöst wird
     {
         public bool? CurrentPlayer { get; private set; } = false;  //anzeige des Aktuelles spielers, ist false by default -> player1 = false, player2 = true.
         private bool?[] Field = new bool?[9];  //Die verschiedenen Felder des TicTacToe bretts als bool dargestellt.
@@ -20,7 +20,7 @@ namespace TicTacToe
         public bool GameRunning => state == GameState.WaitPlayer1 || state == GameState.WaitPlayer2;
         public bool?[] GetField() => Field.ToList().ToArray();  //gibt array von nullable bools zurück source: daniel
 
-        public IEnumerable<int> FreeFields => Enumerable.Range(0, 9).Where(O => Field[0] == null); 
+        public IEnumerable<int> FreeFields => Enumerable.Range(0, 9).Where(O => Field[O] == null);
         public GameState State { get => state; private set { state = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(State))); } }
         //name of gibt exakten namen zurück. Frägt und aktuallisiert den status des spiels jedes mal wenn PropertyChanged ausgelöst oder der status verändert wurde.
         public void PlayerTurn(int fieldNr) //öffentliche methode um zu bestimmen welcher spieler an der reihe ist - öffentlich damit man von Form1 aus drauf zugreifen kann
@@ -79,13 +79,12 @@ namespace TicTacToe
             Tie
         }
 
-        internal MainGame Clone()
+        //methode zum generieren einer weiteren Instanz von MainGame
+        public object Clone() => Clone(null); //ruft die clone methode auf und übergibt null
+        
+        internal MainGame Clone(bool? player = null) //initialiesiert die clone methode und nimmt einen nullable bool entgegen
         {
-            return Clone(CurrentPlayer.Value);
-        }
-        internal MainGame Clone(bool player)
-        {
-            return new MainGame() { State = State, CurrentPlayer = player, Field = GetField() };
+            return new MainGame() { State = State, CurrentPlayer = player ?? CurrentPlayer.Value, Field = GetField() }; //returnt eine instanz von MainGame mit dem aktuellen status des spiels, dem aktuellen spieler und dem aktuellen Feld
         }
     }
 }

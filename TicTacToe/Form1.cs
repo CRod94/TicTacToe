@@ -49,22 +49,22 @@ namespace TicTacToe
             }                                                    //[Convert.ToInt32(btn.Tag)] == tag des buttons zu int convertiert um aufs entsprechende feld zugreifen zu können, speichert dann für jeden button der nicht null ist den jeweiligen wert zu, true oder false
 
         }
-        private void SetButton(Button btn, bool? val)
+        private void SetButton(Button btn, bool? val)  //methode zum aktualisieren der eigenschaft eines buttons, nimmt einen button und ein bool entgegen
         {
-            if (btn.InvokeRequired)
+            if (btn.InvokeRequired)   ////prüft ob aktueller thread der UI-Thread ist, gibt true zurück wenn der aufrufende thread nicht der UI-Thread ist
             {
-                btn.Invoke(new Action(() => SetButton(btn, val)));
+                btn.Invoke(new Action(() => SetButton(btn, val))); //führt methode SetButton mit den Parametern btn, val im UI thread aus
             }
-            else
+            else //wenn der aktuelle thread der UI-Thread ist wird folgendes ausgeführt
             {
-                btn.Enabled = (val == null);
-                btn.Text = val.HasValue ? (val.Value ? "X" : "O") : "";
+                btn.Enabled = (val == null); //Enabled den button sofern val null ist
+                btn.Text = val.HasValue ? (val.Value ? "X" : "O") : ""; //ändert den button text in den vert von vall, bei true "x" bei false "o" und bei null ""
             }
         }
 
         private void PlayerClickButton(object sender, EventArgs e) //methode zum entgegennehmen des spielerinputs eines clicks auf einen button
         {
-            if (CurrentGame.State == WaP(ownPlayer))
+            if (CurrentGame.State == WaP(ownPlayer)) //prüft ob der aktuell Zustand des Spiels dem zustand entspricht indem darauf gewartet wird dass ein Spieler seinen zug macht
             {
                 if (sender is Button btn) CurrentGame.PlayerTurn(Convert.ToInt32(btn.Tag)); //prüft ob der sender ein button ist und ruft die methode PlayerTurn auf und übergibt ihr den tag des buttons
 
@@ -81,15 +81,15 @@ namespace TicTacToe
         {
             CurrentGame = new MainGame(); //setzt das aktuelle spiel auf den zustand eines neuen spiels -> neues game
             ownPlayer = !ownPlayer;
-            _currentKIPlayer = new KIPlayer(CurrentGame, !ownPlayer, _menuScreen.CheckBoxStatus ? 2 : 0);
-        }
+            _currentKIPlayer = new KIPlayer(CurrentGame, !ownPlayer, _menuScreen.CheckBoxStatus ? KiMode.Hardcore : KiMode.Random); //erstellt neue instanz der KIPlayer klasse mit folgenden Parametern:
+        }    //currentgame: repräsentiert das aktuelle spiel, !ownplayer: invertiert den werd von ownplayer, falls menuScreen.CheckBoxStatus -> true, dann kImode.hardcore, false dann Kimode.random
 
         private void CurrentGame_PropertyChanged(object sender, PropertyChangedEventArgs e) //Event-Handler für PropertyChanged der MainGame klasse. Wird aufgerufen wenn sich ein Eigenschaftswert in MainGame ändert
         {
-            if (InvokeRequired)
+            if (InvokeRequired) //prüft ob aktueller thread der UI-Thread ist, gibt true zurück wenn der aufrufende thread nicht der UI-Thread ist
             {
-                Invoke(new Action(() => CurrentGame_PropertyChanged(sender, e)));
-                return;
+                Invoke(new Action(() => CurrentGame_PropertyChanged(sender, e))); //Invoke wird verwendet um den Event-Handler im Ui-Thread aufzurufen.
+                return; //nach dem aufrufen des UI hendlers wird dieser Thread beendet
             }
             if (sender is MainGame game) //prüft ob der sender das MainGame formular ist und gibt ihm die Veriable game
             {
@@ -98,11 +98,11 @@ namespace TicTacToe
                 if (game.State == WaP(ownPlayer)) //prüft ob Spieler 1 an der Reihe ist
                 {
                     lblCPUTurn.Text = ""; //Entfernt den Text aus dem label "lvlCPUTurn"
-                    lblPlayerTurn.Text = "-----------------------"; //ändert den Text in dem label "lblPlayerTurn"
+                    lblPlayerTurn.Text = "-------------------------"; //ändert den Text in dem label "lblPlayerTurn"
                 }
                 if (game.State == WaP(!ownPlayer)) //prüft ob Spieler 2 an der Reihe ist
                 {
-                    lblCPUTurn.Text = "--------------------"; //ändert den Text in dem lavel "lvlPlayerTurn"
+                    lblCPUTurn.Text = "-----------------------"; //ändert den Text in dem lavel "lvlPlayerTurn"
                     lblPlayerTurn.Text = ""; //entfernt den text vom label "lblPlayerturn"
                 }
                 if (game.State == WiP(ownPlayer)) //prüft ob spieler 1 gewonnen hat
@@ -125,23 +125,22 @@ namespace TicTacToe
 
                     RestartGame(); //ruft die restartGame funktion auf -> startet das spiel neu
                 }
-                else if (game.State == MainGame.GameState.Tie)
+                else if (game.State == MainGame.GameState.Tie)   //überprüft ob das spiel sich in einem Unentschieden/Tie befindet
                 {
-                    MessageBox.Show(this, "It's a Tie!");
-                    RestartGame();
+                    MessageBox.Show(this, "It's a Tie!"); //gibt eine Messagebox aus falls es Unentschieden/Tie vorliegt und welcher Text in der MessageBox ausgegeben wird
+                    RestartGame(); //Ruft die RestartGame methode auf, welche das Spiel neu startet bzw zurück setzt
                 }
             }
         }
         private void InGameExitClick(object sender, EventArgs e) //buttonclick event for hiding the game and switching to the menu - Source: eigener Code
         {
-            MenuScreen menu = new MenuScreen();   //deklarierung eines neuen Menuscreen objects
-            menu.Show(); //show funktion zeigt menu an
-            this.Hide(); //hide funktion versteckt das aktuelle fenster (this)
+            _menuScreen.Show(); //show funktion zeigt menu an
+            this.Close(); //hide funktion versteckt das aktuelle fenster (this)
 
         }
 
-        MainGame.GameState WaP(bool player) => (player ? MainGame.GameState.WaitPlayer2 : MainGame.GameState.WaitPlayer1);
-        MainGame.GameState WiP(bool player) => (player ? MainGame.GameState.WinPlayer2 : MainGame.GameState.WinPlayer1);
-
+        MainGame.GameState WaP(bool player) => (player ? MainGame.GameState.WaitPlayer2 : MainGame.GameState.WaitPlayer1); //beschreibt den zustand in dem auf spieler 2 gewartet wird
+        MainGame.GameState WiP(bool player) => (player ? MainGame.GameState.WinPlayer2 : MainGame.GameState.WinPlayer1); //beschreibt den zustand in dem auf spieler 1 gewartet wird
+        //und speichert beides als GameState ab, entweder WaP und WiP
     }
 }

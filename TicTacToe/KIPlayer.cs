@@ -10,17 +10,16 @@ namespace TicTacToe
 {
     internal class KIPlayer
     {
-        private static Random rnd = new Random();
         private readonly MainGame game;
         private readonly bool ownPlayer;
         private readonly MainGame.GameState PlayerWaitState;
-        public int Mode { get; set; }
+        public KiMode Mode { get; set; }
 
         public MainGame.GameState PlayerWinState { get; }
 
         private readonly System.Threading.Timer timer;
 
-        public KIPlayer(MainGame game, bool ownPlayer, int mode)
+        public KIPlayer(MainGame game, bool ownPlayer, KiMode mode)
         {
             this.game = game;
             this.ownPlayer = ownPlayer;
@@ -52,10 +51,10 @@ namespace TicTacToe
 
         public int FindBestMove(MainGame game, int depth = 0)
         {
+            if (depth > 9) return -1;
 
-            if (Mode > 0)
+            if (Mode > KiMode.Random)
             {
-                if (depth > 9) return -1;
 
                 int[] bestMove = { -1, -1 };
                 int bestValue = int.MinValue;
@@ -75,12 +74,19 @@ namespace TicTacToe
                     if (field[7] == null && ((field[6] == sp && field[6] == field[8]) || (field[4] == sp && field[4] == field[1]))) return 7;
                     if (field[8] == null && ((field[5] == sp && field[5] == field[2]) || (field[7] == sp && field[7] == field[6]) || (field[4] == sp && field[4] == field[0]))) return 8;
 
-                    if (Mode > 1) if (field[4] == null && ((field[0] == sp || field[2] == sp || field[6] == sp || field[8] == sp))) return 4;
+                    if (Mode > KiMode.Normal) if (field[4] == null && ((field[0] == sp || field[2] == sp || field[6] == sp || field[8] == sp))) return 4;
                 }
             }
 
-            return rnd.Next(9);
+            return game.FreeFields.OrderBy(o => Guid.NewGuid()).FirstOrDefault();
         }
 
+    }
+
+    public enum KiMode
+    {
+        Random,
+        Normal,
+        Hardcore
     }
 }

@@ -59,7 +59,7 @@
             this.button2.BackColor = System.Drawing.Color.OrangeRed;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(181, 382);
+            this.button2.Location = new System.Drawing.Point(179, 372);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(106, 42);
             this.button2.TabIndex = 2;
@@ -118,11 +118,12 @@
             // HMCheckBox
             // 
             this.HMCheckBox.AutoSize = true;
-            this.HMCheckBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HMCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.HMCheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HMCheckBox.ForeColor = System.Drawing.Color.Red;
-            this.HMCheckBox.Location = new System.Drawing.Point(187, 332);
+            this.HMCheckBox.Location = new System.Drawing.Point(191, 332);
             this.HMCheckBox.Name = "HMCheckBox";
-            this.HMCheckBox.Size = new System.Drawing.Size(90, 21);
+            this.HMCheckBox.Size = new System.Drawing.Size(81, 19);
             this.HMCheckBox.TabIndex = 8;
             this.HMCheckBox.Text = "Hardmode";
             this.HMCheckBox.UseVisualStyleBackColor = true;
@@ -142,7 +143,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::TicTacToe.Properties.Resources.betterflames;
-            this.pictureBox2.Location = new System.Drawing.Point(181, 295);
+            this.pictureBox2.Location = new System.Drawing.Point(179, 293);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(104, 73);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;

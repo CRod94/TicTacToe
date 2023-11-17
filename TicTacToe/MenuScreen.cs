@@ -8,14 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TicTacToe 
+namespace TicTacToe
 {
     public partial class MenuScreen : Form
     {
-        public bool CheckBoxState
+        public bool CheckBoxStatus
         {
             get { return HMCheckBox.Checked; }
-            set { HMCheckBox.Checked = value; }
+            set
+            {
+                if (HMCheckBox.Checked != value)
+                {
+                    HMCheckBox.Checked = value;
+                }
+
+
+
+            }
         }
 
         public MenuScreen()
@@ -30,7 +39,7 @@ namespace TicTacToe
 
         private void button1_Click(object sender, EventArgs e) //Buttonclickevent for starting the Game - source: eigener code
         {
-            Form1 game = new Form1();
+            Form1 game = new Form1(this);
             game.Show();
             this.Hide();
         }

@@ -17,6 +17,7 @@ namespace TicTacToe
         private MainGame _currentGame; //dekleration einer Instanz names _currentGame von MainGame (dem eigentlichen Spiel)
         private KIPlayer _currentKIPlayer;
         private bool ownPlayer = true;
+        private MenuScreen _menuScreen;
 
 
         private MainGame CurrentGame //
@@ -32,9 +33,10 @@ namespace TicTacToe
             }
         }
 
-        public Form1() //konstruktor von Form1
+        public Form1(MenuScreen menu) //konstruktor von Form1
         {
             InitializeComponent(); //Generiert und initialisiert alle visuallen Komponentet wie Buttons, Labels, Textboxen etc.
+            _menuScreen = menu;
             RestartGame(); //Ruft die RestarGame() methode auf, dies führt dazu dass bei jeder neuen Instanz des Formulars das spiel neu geladen wird, stellt sicher dass das spiel immer mit einem Frischen spielstand beginnt
         }
 
@@ -79,7 +81,7 @@ namespace TicTacToe
         {
             CurrentGame = new MainGame(); //setzt das aktuelle spiel auf den zustand eines neuen spiels -> neues game
             ownPlayer = !ownPlayer;
-            _currentKIPlayer = new KIPlayer(CurrentGame, !ownPlayer);
+            _currentKIPlayer = new KIPlayer(CurrentGame, !ownPlayer, _menuScreen.CheckBoxStatus ? 2 : 0);
         }
 
         private void CurrentGame_PropertyChanged(object sender, PropertyChangedEventArgs e) //Event-Handler für PropertyChanged der MainGame klasse. Wird aufgerufen wenn sich ein Eigenschaftswert in MainGame ändert

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TicTacToe //Source for images: google and giphy
+namespace TicTacToe 
 {
     public partial class MenuScreen : Form
     {

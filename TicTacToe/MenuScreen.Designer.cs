@@ -35,6 +35,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.HMCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,7 +44,7 @@
             this.button1.BackColor = System.Drawing.Color.GreenYellow;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(179, 301);
+            this.button1.Location = new System.Drawing.Point(179, 285);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(106, 42);
             this.button1.TabIndex = 1;
@@ -56,7 +57,7 @@
             this.button2.BackColor = System.Drawing.Color.OrangeRed;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(179, 384);
+            this.button2.Location = new System.Drawing.Point(179, 394);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(106, 42);
             this.button2.TabIndex = 2;
@@ -124,6 +125,18 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Humans vs AI";
             // 
+            // HMCheckBox
+            // 
+            this.HMCheckBox.AutoSize = true;
+            this.HMCheckBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HMCheckBox.ForeColor = System.Drawing.Color.Red;
+            this.HMCheckBox.Location = new System.Drawing.Point(188, 333);
+            this.HMCheckBox.Name = "HMCheckBox";
+            this.HMCheckBox.Size = new System.Drawing.Size(90, 21);
+            this.HMCheckBox.TabIndex = 8;
+            this.HMCheckBox.Text = "Hardmode";
+            this.HMCheckBox.UseVisualStyleBackColor = true;
+            // 
             // MenuScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -131,6 +144,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(34)))), ((int)(((byte)(117)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(484, 461);
+            this.Controls.Add(this.HMCheckBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.pictureBox1);
@@ -155,5 +169,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox HMCheckBox;
     }
 }

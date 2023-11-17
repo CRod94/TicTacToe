@@ -12,6 +12,12 @@ namespace TicTacToe
 {
     public partial class MenuScreen : Form
     {
+        public bool CheckBoxState
+        {
+            get { return HMCheckBox.Checked; }
+            set { HMCheckBox.Checked = value; }
+        }
+
         public MenuScreen()
         {
             InitializeComponent();
